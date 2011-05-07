@@ -628,8 +628,7 @@ struct signal_struct {
 	struct tty_audit_buf *tty_audit_buf;
 #endif
 
-  int oom_adj;    /* OOM kill score adjustment (bit shift) */
-  int oom_score_adj;  /* OOM kill score adjustment */
+	int oom_adj;	/* OOM kill score adjustment (bit shift) */
 };
 
 /* Context switch must be unlocked if interrupts are to be enabled */
