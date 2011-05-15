@@ -126,7 +126,7 @@
 
 static inline int rt_policy(int policy)
 {
-	if (policy == SCHED_FIFO || policy == SCHED_RR)
+	if (unlikely(policy == SCHED_FIFO || policy == SCHED_RR))
 		return 1;
 	return 0;
 }
@@ -1834,6 +1834,12 @@ static void dec_nr_running(struct rq *rq)
 
 static void set_load_weight(struct task_struct *p)
 {
+	if (task_has_rt_policy(p)) {
+		p->se.load.weight = 0;
+		p->se.load.inv_weight = WMULT_CONST;
+		return;
+	}
+
 	/*
 	 * SCHED_IDLE tasks get minimal weight:
 	 */
@@ -1972,9 +1978,6 @@ task_hot(struct task_struct *p, u64 now, struct sched_domain *sd)
 
 	if (p->sched_class != &fair_sched_class)
 		return 0;
-
-       if (p->policy == SCHED_IDLE)
-       return 0;
 
 	/*
 	 * Buddy candidates are cache hot:
@@ -2371,7 +2374,7 @@ out_running:
 	if (p->sched_class->task_woken)
 		p->sched_class->task_woken(rq, p);
 
-	if (rq->idle_stamp) {
+	if (unlikely(rq->idle_stamp)) {
 		u64 delta = rq->clock - rq->idle_stamp;
 		u64 max = 2*sysctl_sched_migration_cost;
 
