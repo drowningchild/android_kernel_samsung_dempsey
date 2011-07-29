@@ -365,10 +365,17 @@ static void maxim_stepcharging_work(struct work_struct *work)
 			max8998_write_reg(max8998_i2c, MAX8998_REG_CHGR2,stepchargingreg_buff[1]);
 			mod_timer(&chargingstep_timer, jiffies + msecs_to_jiffies(CHARGINGSTEP_INTERVAL));				
 		}
-	    else if(stepchargingCount == 4)
+	     else if(stepchargingCount == 4)
 		{             //600mA
-			stepchargingCount = 0;
 			stepchargingreg_buff[0] = (stepchargingreg_buff[0] & 0xF8) | 0x05;
+			max8998_write_reg(max8998_i2c, MAX8998_REG_CHGR1,stepchargingreg_buff[0]);
+			max8998_write_reg(max8998_i2c, MAX8998_REG_CHGR2,stepchargingreg_buff[1]);
+			mod_timer(&chargingstep_timer, jiffies + msecs_to_jiffies(CHARGINGSTEP_INTERVAL));				
+		}
+	    else if(stepchargingCount == 5)
+		{             //800mA
+			stepchargingCount = 0;
+			stepchargingreg_buff[0] = (stepchargingreg_buff[0] & 0xF8) | 0x07;
 			max8998_write_reg(max8998_i2c, MAX8998_REG_CHGR1,stepchargingreg_buff[0]);
 			max8998_write_reg(max8998_i2c, MAX8998_REG_CHGR2,stepchargingreg_buff[1]);
 		}
