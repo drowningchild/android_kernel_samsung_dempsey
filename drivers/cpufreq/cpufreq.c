@@ -655,15 +655,6 @@ static ssize_t show_UV_mV_table(struct cpufreq_policy *policy, char *buf) {
 
       return sprintf(buf, "1600mhz: %d mV\n1400mhz: %d mV\n1200mhz: %d mV\n1000mhz: %d mV\n800mhz: %d mV\n500mhz: %d mV\n200mhz: %d mV\n", exp_UV_mV[0]/1000, exp_UV_mV[1]/1000, exp_UV_mV[2]/1000, exp_UV_mV[3]/1000, exp_UV_mV[4]/1000, exp_UV_mV[5]/1000, exp_UV_mV[6]/1000);
 
-<<<<<<< HEAD
-=======
-	ret = sscanf(buf, "%d %d %d %d %d %d", &exp_UV_mV[0], &exp_UV_mV[1], &exp_UV_mV[2], &exp_UV_mV[3], &exp_UV_mV[4], &exp_UV_mV[5]);
-	if(ret != 1) {
-		return -EINVAL;
-	}
-	else
-		return count;
->>>>>>> 3ed72d5... fix cpufreq.c so it builds
 }
 
 static ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
